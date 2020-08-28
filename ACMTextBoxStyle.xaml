@@ -1,0 +1,149 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:acm_text="clr-namespace:ACM.Presentation.Controls.Text"
+                    xmlns:acm_converter="clr-namespace:ACM.Presentation.Controls.Text">
+
+    <acm_converter:converter x:Key="LengthConverter"/>
+    <ControlTemplate x:Key="ACMTextBoxTemplate.Default" TargetType="acm_text:ACMTextBox">
+        <StackPanel Orientation="Horizontal">
+            <Image x:Name="keyImage" Source="pack://application:,,,/KeyIcon.png" 
+                   Height="15" 
+                   Width="15" 
+                   Margin="0 25 3 15">
+            </Image>
+
+            <Border x:Name="border"
+                    Background="White"
+                    BorderBrush="Gray"
+                    BorderThickness="0 0 0 1"
+                    Width="200">
+
+                <Grid>
+
+                    <Line x:Name="bottomLine" 
+                          StrokeThickness="3"
+                          Stroke="Green"
+                          X1="100" Y1="54"
+                          X2="100" Y2="54">
+                    </Line>
+
+                    <TextBox x:Name="textboxContent" 
+                             Text="{TemplateBinding Caption}"
+                             Foreground="Gray"
+                             Background="{TemplateBinding Background}"
+                             BorderThickness="0"
+                             FontSize="15"
+                             Margin="0 25 0 3">
+                        <TextBox.RenderTransform>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TextBox.RenderTransform>
+                    </TextBox>
+
+                    <PasswordBox x:Name="passwordContent"
+                                 BorderThickness="0"
+                                 Height="0"
+                                 Width="0"
+                                 PasswordChar="⚫"
+                                 TextBlock.Foreground="Black"
+                                 Margin="0 25 0 3"/>
+                    <TextBox x:Name="passwordTextBox"
+                             BorderThickness="0"
+                             Height="0"
+                             Width="0"
+                             Text="{Binding ElementName=passwordContent, 
+                                            Path=Password, 
+                                            UpdateSourceTrigger=PropertyChanged,
+                                            Converter={StaticResource LengthConverter}}"
+                             Margin="0 25 0 3">
+                    </TextBox>
+                </Grid>
+            </Border>
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard x:Name="OnMouseLeaveSB">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="bottomLine"
+                                                 Storyboard.TargetProperty="X1"
+                                                 From="100" To="0"
+                                                 Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="bottomLine"
+                                                 Storyboard.TargetProperty="X2"
+                                                 From="100" To="200"
+                                                 Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="textboxContent"
+                                             Storyboard.TargetProperty="RenderTransform.Y"
+                                             From="0" To="-25"
+                                             Duration="0:0:0.3"/>
+                            <ColorAnimation Storyboard.TargetName="textboxContent"
+                                            Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+                                            From="Gray" To="Green"
+                                            Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="textboxContent"
+                                             Storyboard.TargetProperty="FontSize"
+                                             From="15" To="10"
+                                             Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="passwordContent"
+                                             Storyboard.TargetProperty="Height"
+                                             From="0" To="30"
+                                             Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="passwordContent"
+                                             Storyboard.TargetProperty="Width"
+                                             From="0" To="200"
+                                             Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="bottomLine"
+                                             Storyboard.TargetProperty="X1"
+                                             From="0" To="100"
+                                             Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="bottomLine"
+                                             Storyboard.TargetProperty="X2"
+                                             From="185" To="100"
+                                             Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="textboxContent"
+                                             Storyboard.TargetProperty="RenderTransform.Y"
+                                             From="-25" To="0"
+                                             Duration="0:0:0.3"/>
+                            <ColorAnimation Storyboard.TargetName="textboxContent"
+                                            Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+                                            From="Green" To="Gray"
+                                            Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="textboxContent"
+                                             Storyboard.TargetProperty="FontSize"
+                                             From="10" To="15"
+                                             Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="passwordContent"
+                                             Storyboard.TargetProperty="Height"
+                                             From="30" To="0"
+                                             Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetName="passwordContent"
+                                             Storyboard.TargetProperty="Width"
+                                             From="200" To="0"
+                                             Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+                <Setter TargetName="keyImage" Property="Source" Value="pack://application:,,,/GreenKeyIcon.png"/>
+                <Setter TargetName="border" Property="BorderBrush" Value="Green"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="ACMTextBox.Style.Base" TargetType="{x:Type acm_text:ACMTextBox}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding TextBoxType, RelativeSource={RelativeSource Mode=Self}}"
+                         Value="{x:Static acm_text:ACMTextBox+ACMTextBoxType.DefaultMode}">
+                <Setter Property="Template" Value="{StaticResource ACMTextBoxTemplate.Default}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+ 
+
+</ResourceDictionary>
